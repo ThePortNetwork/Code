@@ -1,3 +1,4 @@
+#Gets User Name
 def run():
  with open('username.txt', 'r') as f:
   for word in f:
