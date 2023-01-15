@@ -6,9 +6,12 @@ import os
 
 HEADER_LENGTH = 10
 PORT = 5000
-with open('port.txt', 'r') as f:
-    for word in f:
-        PORT = int(word)
+try:
+    with open('port.txt', 'r') as f:
+        for port in f:
+            PORT = int(port)
+except:
+    PORT = int(input("Enter Port: "))
 try:
     with open('ip.txt', 'r') as f:
         for ip in f:
