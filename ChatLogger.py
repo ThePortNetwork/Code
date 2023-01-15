@@ -3,22 +3,20 @@ import select
 import errno
 import sys
 import os
+import time
 
 HEADER_LENGTH = 10
 PORT = 5000
-try:
-    with open('port.txt', 'r') as f:
-        for port in f:
-            PORT = int(port)
-except:
-    PORT = int(input("Enter Port: "))
+with open('port.txt', 'r') as f:
+    for word in f:
+        PORT = int(word)
 try:
     with open('ip.txt', 'r') as f:
         for ip in f:
-            IP = int(ip)
+            IP = ip
 except:
     IP = int(input("Enter IP: "))
-print(f"Welcome to Port {PORT}. Enter a message and press enter to chat or press enter to read new messages. \n-")
+print(f"Welcome to Port {PORT}\n-")
 my_username = "Chat Logger"
 # Create a socket
 # socket.AF_INET - address family, IPv4, some otehr possible are AF_INET6, AF_BLUETOOTH, AF_UNIX
@@ -61,11 +59,12 @@ while True:
             message_header = client_socket.recv(HEADER_LENGTH)
             message_length = int(message_header.decode('utf-8').strip())
             message = client_socket.recv(message_length).decode('utf-8')
-
+            fullmsg = f'{username} > {message}'
             # Print message
-            print(f'{username} > {message}')
-            with open('log.txt', 'w') as f:
-                f.write(f'{username} > {message}')
+            print(fullmsg)
+            log = open("log.txt", 'a')
+            log.write(f"{fullmsg}\n")
+
     except IOError as e:
         # This is normal on non blocking connections - when there are no incoming data error is going to be raised
         # Some operating systems will indicate that using AGAIN, and some using WOULDBLOCK error code
